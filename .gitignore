@@ -1,0 +1,4 @@
+/.vs/**
+/GroupedTabControl/obj/**
+/GroupedTabControl/bin/**
+/.idea/**
