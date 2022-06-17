@@ -16,10 +16,18 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Center" MinWidth="150" FontSize="20" Margin="5"
-                 Background="CornflowerBlue"
-                 TextChanged="SearchTextBox_OnTextChanged" />
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+            <TextBox x:Name="SearchTextBox" HorizontalAlignment="Center" MinWidth="150" FontSize="20" Margin="5 10"
+                     Background="CornflowerBlue"
+                     TextChanged="SearchTextBox_OnTextChanged" />
+            <StackPanel Margin="10 10">
+                <RadioButton x:Name="GridRadioButton" Content="Grid" IsChecked="True" />
+                <RadioButton x:Name="ListRadioButton" Content="List" />
+            </StackPanel>
+        </StackPanel>
+
         <ItemsControl Grid.Row="1" x:Name="ItemsControl" ItemsSource="{Binding Source={StaticResource ItemsSource}}"
+                      Visibility="{Binding ElementName=GridRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"
                       DataContextChanged="ItemsControl_OnDataContextChanged">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -34,5 +42,8 @@
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
         </ItemsControl>
+        <DataGrid Grid.Row="1" x:Name="DataGrid" ItemsSource="{Binding Source={StaticResource ItemsSource}}"
+                  Visibility="{Binding ElementName=ListRadioButton, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}">
+        </DataGrid>
     </Grid>
 </UserControl>
