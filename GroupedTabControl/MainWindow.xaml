@@ -8,6 +8,13 @@
         x:Name="This"
         Title="MainWindow" Height="450" Width="800"> 
         <Grid >
-            <local:GroupTabControl ItemsSource="{Binding ElementName=This, Path=Sources}"/>    
+            <local:GroupTabControl
+                ItemsSource="{Binding ElementName=This, Path=Sources}">
+                <local:GroupTabControl.ScrollPanelTemplate>
+                    <DataTemplate>
+                        <local:BookScrollView />    
+                    </DataTemplate>
+                </local:GroupTabControl.ScrollPanelTemplate>
+            </local:GroupTabControl>    
         </Grid>
 </Window>

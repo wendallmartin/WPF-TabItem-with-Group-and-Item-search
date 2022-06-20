@@ -19,6 +19,15 @@ public partial class GroupTabControl
         DependencyProperty.Register("ItemsSource", typeof(IEnumerable), typeof(GroupTabControl),
             new PropertyMetadata(null));
 
+    public static readonly DependencyProperty ScrollPanelTemplateProperty = DependencyProperty.Register(
+        "ScrollPanelTemplate", typeof(DataTemplate), typeof(GroupTabControl), new PropertyMetadata(null));
+
+    public DataTemplate ScrollPanelTemplate
+    {
+        get => (DataTemplate)GetValue(ScrollPanelTemplateProperty);
+        set => SetValue(ScrollPanelTemplateProperty, value);
+    }
+
     public GroupTabControl()
     {
         InitializeComponent();
