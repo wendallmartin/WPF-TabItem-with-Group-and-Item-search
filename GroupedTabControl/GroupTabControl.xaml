@@ -16,6 +16,7 @@
             </CollectionViewSource.SortDescriptions>
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Group" />
+                <PropertyGroupDescription PropertyName="Rating" />
             </CollectionViewSource.GroupDescriptions>
         </CollectionViewSource>
     </UserControl.Resources>
@@ -24,50 +25,77 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
-        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Left" MinWidth="140" FontSize="20" Margin="5"
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="SearchTextBox" HorizontalAlignment="Stretch" FontSize="20" Margin="5"
                  Background="CornflowerBlue"
                  TextChanged="SearchTextBox_OnTextChanged" />
-        <TabControl Grid.Row="1" x:Name="TabControl"
-                    ContentTemplate="{Binding ElementName=This, Path=ScrollPanelTemplate}"
-                    ItemsSource="{Binding Source={StaticResource GroupSource}, Path=Groups}" TabStripPlacement="Left">
-            <TabControl.Resources>
-                <Style TargetType="TabItem">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate TargetType="TabItem">
-                                <Grid x:Name="TabItemGrid" Width="150">
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock Text="{Binding Name}" Margin="10" />
-                                        <Border BorderBrush="Blue" BorderThickness="2" CornerRadius="10" Margin="10"
-                                                Padding="2" MinWidth="30">
-                                            <Border.Style>
-                                                <Style TargetType="Border">
-                                                    <Style.Triggers>
-                                                        <DataTrigger
-                                                            Binding="{Binding ElementName=SearchTextBox, Path=Text}"
-                                                            Value="">
-                                                            <Setter Property="Visibility" Value="Collapsed" />
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Border.Style>
-                                            <TextBlock Text="{Binding ItemCount}" HorizontalAlignment="Center" />
-                                        </Border>
-                                    </StackPanel>
-                                </Grid>
-                                <ControlTemplate.Triggers>
-                                    <Trigger Property="IsSelected" Value="True">
-                                        <Setter TargetName="TabItemGrid" Property="Background" Value="LightSkyBlue" />
-                                    </Trigger>
-                                    <Trigger Property="IsSelected" Value="False">
-                                        <Setter TargetName="TabItemGrid" Property="Background" Value="White" />
-                                    </Trigger>
-                                </ControlTemplate.Triggers>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </TabControl.Resources> 
-        </TabControl>
+        <ListBox Grid.Row="1" Grid.Column="0" x:Name="TabControl"
+                 ItemsSource="{Binding Source={StaticResource GroupSource}, Path=Groups}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <Expander>
+                        <Expander.Header>
+                            <Grid Width="150">
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="{Binding Name}" Margin="10" />
+                                    <Border BorderBrush="Blue" BorderThickness="2"
+                                            CornerRadius="10" Margin="10"
+                                            Padding="2" MinWidth="30">
+                                        <Border.Style>
+                                            <Style TargetType="Border">
+                                                <Style.Triggers>
+                                                    <DataTrigger
+                                                        Binding="{Binding ElementName=SearchTextBox, Path=Text}"
+                                                        Value="">
+                                                        <Setter Property="Visibility"
+                                                                Value="Collapsed" />
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Border.Style>
+                                        <TextBlock Text="{Binding ItemCount}"
+                                                   HorizontalAlignment="Center" />
+                                    </Border>
+                                </StackPanel>
+                            </Grid>
+                        </Expander.Header>
+                        <ItemsControl ItemsSource="{Binding Items}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Click="SubGroup_OnClick" Width="150">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="{Binding Name}" Margin="10 10 0 10 " />
+                                            <TextBlock Text="star" Margin="5 10 10 10" />
+                                            <Border BorderBrush="Blue" BorderThickness="2"
+                                                    CornerRadius="10" Margin="10"
+                                                    Padding="2" MinWidth="30">
+                                                <Border.Style>
+                                                    <Style TargetType="Border">
+                                                        <Style.Triggers>
+                                                            <DataTrigger
+                                                                Binding="{Binding ElementName=SearchTextBox, Path=Text}"
+                                                                Value="">
+                                                                <Setter Property="Visibility"
+                                                                        Value="Collapsed" />
+                                                            </DataTrigger>
+                                                        </Style.Triggers>
+                                                    </Style>
+                                                </Border.Style>
+                                                <TextBlock Text="{Binding ItemCount}"
+                                                           HorizontalAlignment="Center" />
+                                            </Border>
+                                        </StackPanel>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </Expander>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+        <groupedTabControl:BookScrollView Grid.Row="0" Grid.Column="1" Grid.RowSpan="2" ItemsSource="{Binding ElementName=This, Path=SelectedItems}"/>
     </Grid>
 </UserControl>

@@ -28,6 +28,15 @@ public partial class GroupTabControl
         set => SetValue(ScrollPanelTemplateProperty, value);
     }
 
+    public static readonly DependencyProperty SelectedItemsProperty = DependencyProperty.Register(
+        "SelectedItems", typeof(IEnumerable), typeof(GroupTabControl), new PropertyMetadata(null));
+
+    public IEnumerable SelectedItems
+    {
+        get => (IEnumerable)GetValue(SelectedItemsProperty);
+        set => SetValue(SelectedItemsProperty, value);
+    }
+
     public GroupTabControl()
     {
         InitializeComponent();
@@ -44,5 +53,19 @@ public partial class GroupTabControl
         collectionViewSource.View.Refresh();
         var groups = collectionViewSource.View.Groups.Cast<CollectionViewGroup>().ToList();
         TabControl.SelectedItem = groups.Any() ? groups.GroupBy(cvg => cvg.ItemCount).First().First() : null;
+    }
+    
+    private void Group_OnClick(object sender, RoutedEventArgs e)
+    {
+        var button = (Button)sender;
+        var collectionViewGroup = (CollectionViewGroup)button.DataContext;
+        SelectedItems = collectionViewGroup.Items.Cast<CollectionViewGroup>().SelectMany(x => x.Items);
+    }
+
+    private void SubGroup_OnClick(object sender, RoutedEventArgs e)
+    {
+        var button = (Button)sender;
+        var collectionViewGroup = (CollectionViewGroup)button.DataContext;
+        SelectedItems = collectionViewGroup.Items;
     }
 }

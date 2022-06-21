@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -7,6 +8,14 @@ namespace GroupedTabControl;
 
 public partial class BookScrollView
 {
+    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
+        "ItemsSource", typeof(IEnumerable), typeof(BookScrollView), new PropertyMetadata(default(IEnumerable)));
+
+    public IEnumerable ItemsSource
+    {
+        get => (IEnumerable)GetValue(ItemsSourceProperty);
+        set => SetValue(ItemsSourceProperty, value);
+    }
     public BookScrollView()
     {
         InitializeComponent();
